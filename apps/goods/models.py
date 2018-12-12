@@ -73,12 +73,29 @@ class GoodsImage(models.Model):
     '''
     商品轮播图
     '''
-    goods = models.ForeignKey(Goods)
-    image = models.ImageField(upload_to=)
-    add_time = models.DateTimeField()
+    goods = models.ForeignKey(Goods, verbose_name='商品', related_name='images')
+    image = models.ImageField(upload_to='', verbose_name='图片', null=True, blank=True)
+    image_url = models.CharField(max_length=300, null=True, blank=True, verbose_name='图片url')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     class Meta:
         verbose_name = '商品轮播图'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.goods.name
+
+class Banner(models.Model):
+    '''
+    轮播的商品
+    '''
+    goods = models.ForeignKey(Goods, verbose_name='商品')
+    image = models.ImageField(upload_to='banner', verbose_name='轮播图片')
+    index = models.IntegerField(default=0, verbose_name='轮播顺序')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+
+    class Meta:
+        verbose_name = '轮播商品'
         verbose_name_plural = verbose_name
 
     def __str__(self):
