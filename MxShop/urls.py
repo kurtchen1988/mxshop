@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve, {'document_root':MEDIA_ROOT}),
 
     # 商品列表
+    url(r'goods/$')
 ]
