@@ -4,8 +4,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import mixins
 from rest_framework import generics
+
+from rest_framework import viewsets
 from .models import Goods
 from rest_framework.pagination import PageNumberPagination
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import GoodsFilter
 # Create your views here.
 '''
 class GoodsListView(APIView):
@@ -30,6 +34,12 @@ class GoodsListView(mixins.ListModelMixin, generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+        
+class GoodsListView(generics.ListAPIView):
+
+    queryset = Goods.objects.all()
+    serializer_class = GoodsSerializer
+    pagination_class = GoodsPagination
 '''
 
 class GoodsPagination(PageNumberPagination):
@@ -38,8 +48,21 @@ class GoodsPagination(PageNumberPagination):
     page_query_param = 'p'
     max_page_size = 100
 
-class GoodsListView(generics.ListAPIView):
 
+
+class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+
+    #queryset = Goods.objects.all()
     queryset = Goods.objects.all()
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = GoodsFilter
+    #filter_fields = ('name', 'shop_price')
+'''
+    def get_queryset(self):
+        price_min = self.request.query_params.get('price_min', 0)
+        if price_min:
+            queryset = self.queryset.filter(shop_price__gt=int(price_min))
+        return queryset
+'''
