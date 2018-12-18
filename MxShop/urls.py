@@ -31,7 +31,7 @@ router = DefaultRouter()
 router.register(r'goods', GoodsListViewSet, base_name='goods')
 
 # 配置category的url
-router.register(r'categorys', CategoryViewSet, basename='categorys')
+router.register(r'categorys', CategoryViewSet, base_name='categorys')
 
 goods_list = GoodsListViewSet.as_view({
     'get':'list',
@@ -46,6 +46,5 @@ urlpatterns = [
     # 商品列表
     #url(r'goods/$', goods_list, name='goods-list'),
     url(r'^', include(router.urls)),
-
     url(r'docs/', include_docs_urls(title='暮学生鲜'))
 ]

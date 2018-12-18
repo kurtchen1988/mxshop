@@ -1,4 +1,4 @@
-from .serializers import GoodsSerializer, CategorySerializer
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +10,7 @@ from .models import Goods, GoodsCategory
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import GoodsFilter
+from .serializers import GoodsSerializer, CategorySerializer
 # Create your views here.
 '''
 class GoodsListView(APIView):
@@ -70,10 +71,10 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             queryset = self.queryset.filter(shop_price__gt=int(price_min))
         return queryset
 '''
-class CategoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     '''
     list:
         商品分类列表数据
     '''
-    queryset = GoodsCategory.objects.all()
+    queryset = GoodsCategory.objects.filter(category_type=1)
     serializer_class = CategorySerializer

@@ -9,6 +9,10 @@ class GoodsFilter(django_filters.rest_framework.FilterSet):
     price_min = django_filters.NumberFilter(field_name='shop_price',lookup_expr='gte')
     price_max = django_filters.NumberFilter(field_name='shop_price',lookup_expr='lte')
     #name = django_filters.CharFilter(field_name='name', lookup_expr='icontains')
+    top_category = django_filters.NumberFilter(method='top_category_filter')
+
+    def top_category_filter(self):
+        pass
 
     class Meta:
         model = Goods
