@@ -40,11 +40,11 @@ goods_list = GoodsListViewSet.as_view({
 urlpatterns = [
     #path('admin/', admin.site.urls),
     url(r'^xadmin/', xadmin.site.urls),
-    url(r'^api-auth/', include('rest_framework.urls')),
-   #url(r'^media/(?P<path>.*)$', serve, {'document_root':MEDIA_ROOT}),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root':MEDIA_ROOT}),
 
     # 商品列表
     #url(r'goods/$', goods_list, name='goods-list'),
     url(r'^', include(router.urls)),
-    url(r'docs/', include_docs_urls(title='暮学生鲜'))
+    url(r'docs/', include_docs_urls(title='暮学生鲜')),
 ]
