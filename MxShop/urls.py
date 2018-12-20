@@ -25,7 +25,7 @@ from rest_framework.authtoken import views
 from rest_framework_jwt.views import obtain_jwt_token
 
 from goods.views import GoodsListViewSet, CategoryViewSet
-from users.views import SmsCodeViewSet
+from users.views import SmsCodeViewSet, UserViewSet
 
 router = DefaultRouter()
 # 配置goods的url
@@ -35,6 +35,8 @@ router.register(r'goods', GoodsListViewSet, base_name='goods')
 router.register(r'categorys', CategoryViewSet, base_name='categorys')
 
 router.register(r'codes', SmsCodeViewSet, base_name='codes')
+
+router.register(r'users', UserViewSet, base_name='users')
 
 goods_list = GoodsListViewSet.as_view({
     'get':'list',
