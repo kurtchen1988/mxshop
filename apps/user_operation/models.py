@@ -17,6 +17,7 @@ class UserFav(models.Model):
     class Meta:
         verbose_name = '用户收藏'
         verbose_name_plural = verbose_name
+        unique_together = ('user', 'goods')
 
     def __str__(self):
         return self.user.name
@@ -44,6 +45,7 @@ class UserLeavingMessage(models.Model):
     class Meta:
         verbose_name = '用户留言'
         verbose_name_plural = verbose_name
+
 
     def __str__(self):
         return self.subject
