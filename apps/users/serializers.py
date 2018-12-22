@@ -33,7 +33,6 @@ class SmsSerializer(serializers.Serializer):
         one_minutes_ago = datetime.now() - timedelta(hours=0, minutes=1, seconds=0)
         if VerifyCode.objects.filter(add_time__gt=one_minutes_ago, mobile=mobile).count():
             raise serializers.ValidationError('距离上一次发送未超过60s')
-
         return mobile
 
 class UserRegSerializer(serializers.ModelSerializer):
