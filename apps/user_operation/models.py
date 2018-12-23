@@ -11,7 +11,7 @@ class UserFav(models.Model):
     用户收藏
     '''
     user = models.ForeignKey(User, verbose_name='用户', on_delete=models.CASCADE)
-    goods = models.ForeignKey(Goods, verbose_name='商品', on_delete=models.CASCADE)
+    goods = models.ForeignKey(Goods, verbose_name='商品', help_text='商品id',on_delete=models.CASCADE)
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     class Meta:
