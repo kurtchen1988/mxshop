@@ -10,6 +10,7 @@ from rest_framework.authentication import TokenAuthentication
 
 from .models import Goods, GoodsCategory, GoodsImage
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import LimitOffsetPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import GoodsFilter
 from .serializers import GoodsSerializer, CategorySerializer
@@ -47,7 +48,7 @@ class GoodsListView(generics.ListAPIView):
 '''
 
 class GoodsPagination(PageNumberPagination):
-    page_size = 12
+    #page_size = 12
     page_size_query_param = 'page_size'
     page_query_param = 'p'
     max_page_size = 100

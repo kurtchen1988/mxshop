@@ -10,8 +10,9 @@ from rest_framework import status
 from MxShop.settings import APIKEY
 from utils.yunpian import YunPian
 from random import choice
-from rest_framework import permissions
+from rest_framework import permissions, authentication
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import mixins
 from .models import VerifyCode
 
@@ -45,6 +46,7 @@ class SmsCodeViewSet(CreateModelMixin, viewsets.GenericViewSet):
         for i in range(4):
             random_str.append(choice(seeds))
 
+        print(random_str)
         return ''.join(random_str)
 
     def create(self, request, *args, **kwargs):
@@ -80,8 +82,10 @@ class UserViewSet(CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericV
     '''
     serializer_class = UserRegSerializer
     queryset = User.objects.all()
+    authentication_classes = (authentication.SessionAuthentication, JSONWebTokenAuthentication,)
 
-    #permission_classes = (permissions.IsAuthenticated, )
+    # permission_classes = (permissions.IsAuthenticated, )
+
     def get_permissions(self):
         if self.action == 'retrieve':
             return [permissions.IsAuthenticated()]
