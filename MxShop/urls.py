@@ -42,9 +42,9 @@ router.register(r'users', UserViewSet, base_name='users')
 # 收藏
 router.register(r'userfavs', UserFavViewSet, base_name='userfavs')
 
-goods_list = GoodsListViewSet.as_view({
-    'get':'list',
-})
+#goods_list = GoodsListViewSet.as_view({
+#    'get':'list',
+#})
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
