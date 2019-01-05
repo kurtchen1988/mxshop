@@ -12,7 +12,7 @@ class YunPian(object):
         params = {
             'apikey': self.api_key,
             'mobile': mobile,
-            'text':'【爱果生鲜】您的验证码是{code}。若非本人操作，请忽略本短信'.format(code=code)
+            'text':'【陈辰网站测试】本测试网站的测试码是：{code}'.format(code=code)
         }
 
         response = requests.post(self.single_send_url, data=params)
@@ -21,5 +21,5 @@ class YunPian(object):
         return re_dict
 
 if __name__ == '__main__':
-    yun_pian = YunPian('')
-    yun_pian.send_sms('2017','123456')
+    yun_pian = YunPian('fbe319c5b347bb47e7578e4041a7d103')
+    yun_pian.send_sms('2017','15868146400')
