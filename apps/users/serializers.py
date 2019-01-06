@@ -5,9 +5,11 @@ from datetime import datetime
 from datetime import timedelta
 from rest_framework.validators import UniqueValidator
 
+
 from .models import VerifyCode
 
-from MxShop.settings import REGEX_MOBILE
+from MxShop.settings import REGEX_MOBILE, APIKEY
+from utils.yunpian import YunPian
 
 User = get_user_model()
 
@@ -34,6 +36,7 @@ class SmsSerializer(serializers.Serializer):
         if VerifyCode.objects.filter(add_time__gt=one_minutes_ago, mobile=mobile).count():
             raise serializers.ValidationError('距离上一次发送未超过60s')
         return mobile
+
 
 class UserRegSerializer(serializers.ModelSerializer):
     code = serializers.CharField(required=True, write_only=True, max_length=4, min_length=4, label='验证码', error_messages={

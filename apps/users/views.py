@@ -56,7 +56,7 @@ class SmsCodeViewSet(CreateModelMixin, viewsets.GenericViewSet):
         mobile = serializer.validated_data['mobile']
 
         yun_pian = YunPian(APIKEY)
-        #yun_pian.send_sms(mobile)
+        #yun_pian.send_sms(code=self.generate_code(), mobile)
         code = self.generate_code()
 
         sms_status = yun_pian.send_sms(code=code, mobile=mobile )
@@ -70,7 +70,7 @@ class SmsCodeViewSet(CreateModelMixin, viewsets.GenericViewSet):
             code_record.save()
             return Response(
                 {'mobile':mobile}
-            , status=status.HTTP_201_CREATED)
+                , status=status.HTTP_201_CREATED)
 
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -82,9 +82,9 @@ class UserViewSet(CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericV
     '''
     serializer_class = UserRegSerializer
     queryset = User.objects.all()
-    authentication_classes = (authentication.SessionAuthentication, JSONWebTokenAuthentication,)
+    #authentication_classes = (authentication.SessionAuthentication, JSONWebTokenAuthentication,)
 
-    # permission_classes = (permissions.IsAuthenticated, )
+    #   permission_classes = (permissions.IsAuthenticated, )
 
     def get_permissions(self):
         if self.action == 'retrieve':
