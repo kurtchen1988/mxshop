@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework.mixins import CreateModelMixin
 from rest_framework import viewsets
-from .serializers import SmsSerializer, UserRegSerializer
+from .serializers import SmsSerializer, UserRegSerializer, UserDetailSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from MxShop.settings import APIKEY
@@ -76,21 +76,29 @@ class SmsCodeViewSet(CreateModelMixin, viewsets.GenericViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-class UserViewSet(CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class UserViewSet(CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     '''
     用户
     '''
     serializer_class = UserRegSerializer
     queryset = User.objects.all()
+    authentication_classes = (JSONWebTokenAuthentication,)
     #authentication_classes = (authentication.SessionAuthentication, JSONWebTokenAuthentication,)
 
-    #   permission_classes = (permissions.IsAuthenticated, )
+    #permission_classes = (permissions.IsAuthenticated, )
+
+    def get_serializer_class(self):
+        if self.action =='retrieve':
+            return UserDetailSerializer
+        elif self.action =='create':
+            return UserRegSerializer
+        return UserDetailSerializer
 
     def get_permissions(self):
         if self.action == 'retrieve':
             return [permissions.IsAuthenticated()]
         elif self.action == 'create':
-            return []
+            return [permissions.IsAuthenticated()]
         return []
 
     def create(self, request, *args, **kwargs):
