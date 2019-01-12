@@ -1,5 +1,5 @@
 import time
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
@@ -80,6 +80,8 @@ from utils.alipay import AliPay
 from MxShop.settings import ali_pub_key_path, private_key_path
 import datetime
 from rest_framework.response import Response
+#from django.shortcuts import redirect
+
 class AlipayViewset(APIView):
     def get(self, request):
         '''
@@ -117,7 +119,13 @@ class AlipayViewset(APIView):
                 exsited_orders.pay_time = datetime.now()
                 exsited_orders.save()
 
-            return Response('success')
+            #from django.shortcuts import redirect
+            response = redirect('index')
+            response.set_cookie('nextPath', 'pay', max_age=2)
+            return response
+        else:
+            response = redirect('index')
+            return response
 
 
     def post(self, request):

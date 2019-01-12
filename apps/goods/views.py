@@ -8,12 +8,12 @@ from rest_framework import filters
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 
-from .models import Goods, GoodsCategory, GoodsImage
+from .models import Goods, GoodsCategory, GoodsImage, Banner, HotSearchWords
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.pagination import LimitOffsetPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import GoodsFilter
-from .serializers import GoodsSerializer, CategorySerializer
+from .serializers import GoodsSerializer, CategorySerializer, HotWordsSerializer, BannerSerializer
 
 # Create your views here.
 '''
@@ -85,3 +85,17 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
     '''
     queryset = GoodsCategory.objects.filter(category_type=1)
     serializer_class = CategorySerializer
+
+class HotSearchsViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    '''
+    获取热搜词列表
+    '''
+    queryset = HotSearchWords
+    serializer_class = HotWordsSerializer
+
+class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    '''
+    获取轮播图列表
+    '''
+    queryset = Banner.objects.all().order_by('index')
+    serializer_class = BannerSerializer

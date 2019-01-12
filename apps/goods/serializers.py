@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from goods.models import Goods, GoodsCategory, GoodsImage
+from goods.models import Goods, GoodsCategory, GoodsImage, HotSearchWords, Banner
 '''
 class GoodsSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, max_length=100)
@@ -41,3 +41,14 @@ class GoodsSerializer(serializers.ModelSerializer):
 
 #class GoodCategorySerializer(serializers.ModelSerializer):
     '''商品类别序列化'''
+
+class HotWordsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HotSearchWords
+        fields = '__all__'
+
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner.objects.all().order_by('index')
+        fields = '__all__'
