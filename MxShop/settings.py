@@ -177,3 +177,7 @@ REGEX_MOBILE = '^1[358]\d{9}$|^147\d{8}$|^176\d{8}$'
 
 #云片网设置
 APIKEY = 'fbe319c5b347bb47e7578e4041a7d103'
+
+#支付宝相关设置
+private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/keys.txt')
+ali_pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/public.txt')
