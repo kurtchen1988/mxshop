@@ -25,6 +25,7 @@ from rest_framework.authtoken import views
 from rest_framework_jwt.views import obtain_jwt_token
 
 from goods.views import GoodsListViewSet, CategoryViewSet, BannerViewset
+from goods.views import IndexCategoryViewset
 from users.views import SmsCodeViewSet, UserViewSet
 from user_operation.views import UserFavViewSet, LeavingMessageViewset, AddressViewset
 from trade.views import ShoppingCartViewset, OrderViewset, AlipayViewset
@@ -58,6 +59,9 @@ router.register(r'orders', OrderViewset, base_name='orders')
 
 # 轮播图url
 router.register(r'banners', BannerViewset, base_name='banners')
+
+# 首页商品系列数据
+router.register(r'indexgoods', IndexCategoryViewset, base_name='indexgoods')
 
 goods_list = GoodsListViewSet.as_view({
     'get':'list',
