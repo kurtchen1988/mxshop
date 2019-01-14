@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'rest_framework.authtoken',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +80,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -137,6 +140,10 @@ USE_TZ = False
 
 AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
+    'social_core.backends.weibo.WeiboOAuth2',
+    'social_core.backends.qq.QQOAuth2',
+    'social_core.backends.weixin.WeixinOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 # Static files (CSS, JavaScript, Images)
@@ -159,7 +166,30 @@ REST_FRAMEWORK = {
         #'rest_framework.authentication.SessionAuthentication',
         #'rest_framework.authentication.TokenAuthentication',
         #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    )
+    ),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '2/minute',
+        'user': '3/minute'
+    }
+}
+
+# 配置redis缓存
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 15
 }
 '''
 REST_FRAMEWORK = {
@@ -184,3 +214,14 @@ APIKEY = 'fbe319c5b347bb47e7578e4041a7d103'
 #支付宝相关设置
 private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/keys.txt')
 ali_pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/public.txt')
+
+SOCIAL_AUTH_WEIBO_KEY = 'foobar'
+SOCIAL_AUTH_WEIBO_SECRET = 'bazqux'
+
+SOCIAL_AUTH_QQ_KEY = 'foobar'
+SOCIAL_AUTH_QQ_SECRET = 'bazqux'
+
+SOCIAL_AUTH_WEIXIN_KEY = 'foobar'
+SOCIAL_AUTH_WEIXIN_SECRET = 'bazqux'
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'

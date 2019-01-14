@@ -7,6 +7,9 @@ from rest_framework import generics
 from rest_framework import filters
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 from .models import Goods, GoodsCategory, GoodsImage, Banner, HotSearchWords
 from rest_framework.pagination import PageNumberPagination
@@ -55,11 +58,12 @@ class GoodsPagination(PageNumberPagination):
 
 
 
-class GoodsListViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class GoodsListViewSet(CacheResponseMixin, mixins.ListModelMixin,mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     '''
     商品列表页，分页，搜索，过滤，排序
     '''
     #queryset = Goods.objects.all()
+    throttle_classes = (UserRateThrottle, AnonRateThrottle)
     queryset = Goods.objects.all()
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination

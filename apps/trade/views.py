@@ -40,8 +40,14 @@ class ShoppingCartViewset(viewsets.ModelViewSet):
         instance.delete()
 
     def perform_update(self, serializer):
-        existed_record = ShoppingCart.objects.get(id=serializer.id)
-        serializer.save()
+        existed_record = ShoppingCart.objects.get(id=serializer.instance.id)
+        existed_nums = existed_record.nums
+        saved_record = serializer.save()
+        nums = saved_record.nums - existed_record
+        goods = saved_record.goods
+        goods.goods_num -= nums
+        goods.save()
+
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -176,6 +182,13 @@ class AlipayViewset(APIView):
             exsited_orders = OrderInfo.objects.filter(order_sn = order_sn)
 
             for exsited_order in exsited_orders:
+                order_goods = exsited_order.objects.filter(order_sn = order_sn)
+
+                for order_good in order_goods:
+                    goods = order_good.goods
+                    goods.sold_num += order_good.goods_num
+                    goods.save()
+
                 exsited_order.pay_status = trade_status
                 exsited_orders.pay_no = trade_no
                 exsited_orders.pay_time = datetime.now()
