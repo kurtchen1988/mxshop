@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework.authtoken',
     'social_django',
+    'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE = [
@@ -225,3 +226,7 @@ SOCIAL_AUTH_WEIXIN_KEY = 'foobar'
 SOCIAL_AUTH_WEIXIN_SECRET = 'bazqux'
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
+
+RAVEN_CONFIG = {
+    'dsn':'http://eb19b9a37c984b4797911593bdbe445a:ec18477f960f462da328a7374a1ffbe5@127.0.0.1:9000/2',
+}
